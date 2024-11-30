@@ -1,7 +1,5 @@
 # Variable Dataflow Tracer
 
-**Description:**
-
 Variable Dataflow Tracer is an open-source tool developed by Cybedefend that performs variable-specific data flow analysis across multiple programming languages. It traces the usage and origin of a specified variable within codebases to create comprehensive dataflow graphs. This aids developers and security engineers in understanding how data moves through their applications, particularly focusing on individual variables. The project is licensed under the MIT License and welcomes contributions from the community.
 
 ---
