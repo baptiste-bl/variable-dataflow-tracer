@@ -1,0 +1,68 @@
+# Go build artifacts
+bin/
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Logs and debugging
+*.log
+*.trace
+*.prof
+
+# Dependency directories
+vendor/
+
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Compiled Object files
+*.o
+*.a
+
+# Test result files
+*.test
+
+# IDE and editor-specific files
+.vscode/
+.idea/
+*.iml
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Environment and configuration files
+.env
+.env.local
+.env.*
+!.env.example
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*.bak
+*.orig
+
+# Module dependencies (auto-generated)
+go.sum
+
+# Coverage results
+coverage.out
+
+# Debugging tools
+__debug_bin
+
+# Docker and Kubernetes
+*.log
+*.pid
+*.sock
+.docker/
+.dockerignore
+.kube/
