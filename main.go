@@ -8,8 +8,6 @@ import (
 	"fmt"
 	"strings"
 	"time"
-
-	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -20,13 +18,6 @@ func main() {
 		func(format string, v ...interface{}) { fmt.Printf("[ERROR] "+format, v...) },
 		func(format string, v ...interface{}) { fmt.Printf("[DEBUG] "+format, v...) },
 	)
-
-	// Charger le fichier .env
-	if err := godotenv.Load(); err != nil {
-		logger.PrintError("Error loading .env file")
-	} else {
-		logger.PrintDebug(".env file loaded")
-	}
 
 	start := time.Now()
 

@@ -69,20 +69,47 @@ The following languages are currently supported by **Variable Dataflow Tracer**:
 
 ## Installation
 
+### Prerequisites
+
+Ensure you have **Docker** and **Visual Studio Code** installed, along with the **Dev Containers** extension enabled. This setup provides a consistent development environment using a container.
+
+### Installation Steps
+
 1. **Clone the Repository**:
+
+   Clone the project locally to start development.
 
    ```bash
    git clone https://github.com/your-username/variable-dataflow-tracer.git
    cd variable-dataflow-tracer
    ```
 
-2. **Install Dependencies**:
+2. **Open the Project in a Dev Container**:
+
+   Open the project folder in Visual Studio Code, and let the Dev Containers extension automatically set up the environment.
+
+   1. Open the command palette in VS Code (`Ctrl + Shift + P`).
+   2. Search for and select: **Dev Containers: Rebuild and Reopen in Container**.
+   3. Wait for the container to be built and ready for use.
+
+   Once the Dev Container is active, you will have a fully configured environment with all necessary dependencies, including Go, GCC, and Clang.
+
+3. **Install Project Dependencies**:
+
+   Inside the Dev Container, run the following command to install the Go dependencies:
 
    ```bash
    go mod tidy
    ```
 
-   This command ensures all dependencies are correctly installed.
+   This ensures that all required dependencies for the project are correctly installed.
+
+---
+
+### Summary
+
+- **Why use a Dev Container?**: It simplifies dependency management (Go, GCC, Clang) and ensures a consistent development environment for all contributors.
+- **Included Dependencies**: Go `1.22.7`, GCC, Clang, musl-dev.
 
 ## Usage
 

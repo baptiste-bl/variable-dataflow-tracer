@@ -25,7 +25,7 @@ import (
 //
 // -----------------------------------------------------------------------------
 func RunDataflowAnalysis(config models.Config) ([]models.DataFlow, error) {
-	// Configuration du logger
+	// Logger configuration
 	logger.Setup(
 		func(format string, v ...interface{}) {
 			if config.Verbose {
@@ -49,24 +49,24 @@ func RunDataflowAnalysis(config models.Config) ([]models.DataFlow, error) {
 
 	dataflowInitial := dataFlowService.CreateDataflowInitial(config)
 
-	// Vérifier que la variable est définie
+	// Check if the variable is defined
 	if config.Variable == "" {
 		logger.PrintError("Variable is not defined in config")
 		return dataflowInitial, nil
 	}
 
-	// Définir la langue globale
+	// Set the global language
 	models.GlobalLanguage = config.Language
 	logger.PrintDebug("Global language set to: %s", config.Language)
 
-	// Lire le contenu du fichier
+	// Read the file content
 	content, err := os.ReadFile(config.FilePath)
 	if err != nil {
 		logger.PrintError("error reading file: %v", err)
 		return nil, fmt.Errorf("error reading file: %v", err)
 	}
 
-	// Parser le contenu en syntax tree
+	// Parse the content into a syntax tree
 	tree := languageService.ParseContent(content, config.Language)
 	if tree == nil {
 		logger.PrintError("failed to parse the file into a syntax tree")
@@ -75,10 +75,10 @@ func RunDataflowAnalysis(config models.Config) ([]models.DataFlow, error) {
 
 	logger.PrintDebug("variable selected: %s", config.Variable)
 
-	// Variables à suivre
+	// Variables to track
 	variablesToTrack := map[string]bool{config.Variable: true}
 
-	// Analyse de la variable dans la fonction
+	// Analyze the variable in the function
 	root := tree.RootNode()
 	startingFunction := nodeService.FindFunctionByLine(root, uint32(config.StartLine), config.Language)
 	if startingFunction == nil {
@@ -88,21 +88,21 @@ func RunDataflowAnalysis(config models.Config) ([]models.DataFlow, error) {
 	visitedLines := make(map[uint32]bool)
 	visitedFunctions := make(map[string]*models.VisitInfo)
 
-	// Lancer l'analyse du flux de données
+	// Start data flow analysis
 	result := crawler.CrawlFromLine(root, startingFunction, content, variablesToTrack, uint32(config.StartLine), true, visitedLines, visitedFunctions)
 
-	// Supprimer les étapes en double
+	// delete duplicate steps
 	result = dataFlowService.RemoveDuplicateDataFlowStep(result, uint32(config.StartLine), config.Variable)
 
-	// Ajouter une vérification pour les variables globales
+	// Add a verification step for the global variable
 	result = nodeService.AddGlobalVariableSteps(result, root, content, uint32(config.StartLine))
 
-	// Afficher le résultat si le mode verbose est activé
+	// Print the data flow
 	if config.Verbose {
 		models.PrintDataFlow(result)
 	}
 
-	// Créer le modèle de dataflow final
+	// Create the data flow model
 	dataflow := dataFlowService.CreateDataflow(result, content, config.StartLine, config.Language, config.FilePath, config.Variable)
 
 	return dataflow, nil
