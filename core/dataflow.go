@@ -12,6 +12,18 @@ import (
 	"os"
 )
 
+// -----------------------------------------------------------------------------
+// RunDataflowAnalysis - Runs data flow analysis based on the provided configuration
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - config (models.Config): Configuration settings for the data flow analysis.
+//
+// Returns:
+//   - ([]models.DataFlow): A slice of DataFlow models representing the result of the analysis.
+//   - (error): An error object if an error occurred during the analysis.
+//
+// -----------------------------------------------------------------------------
 func RunDataflowAnalysis(config models.Config) ([]models.DataFlow, error) {
 	// Configuration du logger
 	logger.Setup(

@@ -1,4 +1,4 @@
-// Toutes les fonctions qui traitent des langages et du parsing de contenu en fonction des langages supportés.
+// All functions that handle languages and content parsing based on supported languages.
 
 package languageService
 
@@ -18,6 +18,17 @@ import (
 	"github.com/smacker/go-tree-sitter/rust"
 )
 
+// -----------------------------------------------------------------------------
+// GetLanguage - Returns the language configuration for the specified language.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - language (string): The name of the programming language.
+//
+// Returns:
+//   - (*sitter.Language): The language configuration object or nil if unsupported.
+//
+// -----------------------------------------------------------------------------
 func GetLanguage(language string) *sitter.Language {
 	switch language {
 	case "go":
@@ -46,7 +57,18 @@ func GetLanguage(language string) *sitter.Language {
 	}
 }
 
-// ParseContent parse le contenu du fichier et retourne l'arbre syntaxique complet.
+// -----------------------------------------------------------------------------
+// ParseContent - Parses the given content based on the specified programming language.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - content ([]byte): The content to be parsed.
+//   - language (string): The programming language of the content.
+//
+// Returns:
+//   - (*sitter.Tree): The parsed syntax tree of the content.
+//
+// -----------------------------------------------------------------------------
 func ParseContent(content []byte, language string) *sitter.Tree {
 	logger.PrintDebug("Parsing content for language: %s", language)
 	parser := sitter.NewParser()

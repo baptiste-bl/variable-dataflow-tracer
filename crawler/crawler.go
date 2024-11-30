@@ -11,6 +11,24 @@ import (
 
 var visitedFunctionStack []string
 
+// -----------------------------------------------------------------------------
+// CrawlFromLine - Performs data flow analysis starting from a specific line.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - root (*sitter.Node): The root node of the syntax tree.
+//   - node (*sitter.Node): The current node in the syntax tree.
+//   - content ([]byte): The content of the file being analyzed.
+//   - variablesToTrack (map[string]bool): A map of variables to track during the analysis.
+//   - startLine (uint32): The line number to start the analysis from.
+//   - startFromEnd (bool): Flag indicating whether to start the analysis from the end of the function.
+//   - visitedLines (map[uint32]bool): A map of lines that have already been visited.
+//   - visitedFunctions (map[string]*models.VisitInfo): A map of functions that have already been visited.
+//
+// Returns:
+//   - ([]models.DataFlowStep): A slice of data flow steps identified during the analysis.
+//
+// -----------------------------------------------------------------------------
 func CrawlFromLine(
 	root,
 	node *sitter.Node,
@@ -68,7 +86,23 @@ func CrawlFromLine(
 	return filteredDataFlow
 }
 
-// analyzeNode analyse a node in the syntax tree and returns the data flow steps for the variable
+// analyzeNode - Analyzes a node in the syntax tree to trace variable data flow
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - root (*sitter.Node): The root node of the syntax tree.
+//   - node (*sitter.Node): The current node being analyzed.
+//   - content ([]byte): The content of the source code.
+//   - variable (string): The variable to track in the data flow analysis.
+//   - visitedLines (map[uint32]bool): A map to keep track of visited lines to avoid duplicate analysis.
+//   - visitedFunctions (map[string]*models.VisitInfo): A map to keep track of visited functions and their visit information.
+//   - variablesToTrack (map[string]bool): A map of variables to track during the analysis.
+//   - startLine (uint32): The starting line number for the analysis.
+//
+// Returns:
+//   - ([]models.DataFlowStep): A slice of DataFlowStep representing the steps in the variable's data flow.
+//
+// -----------------------------------------------------------------------------
 func analyzeNode(
 	root, node *sitter.Node,
 	content []byte,

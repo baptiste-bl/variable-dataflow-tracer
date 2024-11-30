@@ -25,8 +25,18 @@ const (
 	underline = "\033[4m"
 )
 
+// -----------------------------------------------------------------------------
+// clearConsole - Clears the console screen based on the operating system.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - None
+//
+// Returns:
+//   - None
+//
+// -----------------------------------------------------------------------------
 func clearConsole() {
-	// Détecter le système d'exploitation pour utiliser la bonne commande
 	cmdName := "clear"
 	if runtime.GOOS == "windows" {
 		cmdName = "cls"
@@ -36,6 +46,17 @@ func clearConsole() {
 	cmd.Run()
 }
 
+// -----------------------------------------------------------------------------
+// displayMenu - Displays the main menu for selecting the test set.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - None
+//
+// Returns:
+//   - None
+//
+// -----------------------------------------------------------------------------
 func displayMenu() {
 	clearConsole()
 	fmt.Println(bold + cyan + "\n***************************************")
@@ -182,6 +203,17 @@ func main() {
 	fmt.Println(bold + blue + "=== End of Dataflow Analysis Tests ===" + reset)
 }
 
+// executeTest - Executes a dataflow analysis test for a given programming language.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - test (struct): Contains the language, file path, start line, and variable to be analyzed.
+//   - reader (*bufio.Reader): Reader to handle user input.
+//
+// Returns:
+//   - (void): This function does not return a value.
+//
+// -----------------------------------------------------------------------------
 func executeTest(test struct {
 	language, filePath string
 	startLine          int
@@ -223,7 +255,18 @@ func executeTest(test struct {
 	reader.ReadString('\n')
 }
 
-// extractCodeLine extrait le contenu de la ligne spécifiée dans le fichier
+// extractCodeLine - Extracts a specific line of code from a file.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - filePath (string): The path to the file.
+//   - lineNumber (int): The line number to extract.
+//
+// Returns:
+//   - (string): The extracted line of code.
+//   - (error): Error if the file cannot be opened or the line number is not found.
+//
+// -----------------------------------------------------------------------------
 func extractCodeLine(filePath string, lineNumber int) (string, error) {
 	file, err := os.Open(filePath)
 	if err != nil {

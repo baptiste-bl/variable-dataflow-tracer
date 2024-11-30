@@ -1,37 +1,38 @@
-// Fonctions liées à la gestion du flux de données, en particulier celles qui manipulent et analysent les variables au sein du code.
+// Functions related to data flow management, particularly those that manipulate and analyze variables within the code.
 
 package dataFlowService
 
 import (
 	"dataflow/logger"
 	"dataflow/models"
+	"dataflow/services/utilityService"
 	"os"
 	"strings"
 )
 
-// Fonction auxiliaire pour calculer le maximum
-func max(x, y int) int {
-	if x > y {
-		return x
-	}
-	return y
-}
-
-// Fonction auxiliaire pour calculer le minimumContainsString
-func min(x, y int) int {
-	if x < y {
-		return x
-	}
-	return y
-}
-
+// -----------------------------------------------------------------------------
+// CreateDataflow - Creates a data flow based on the provided steps and content.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - dataflow ([]models.DataFlowStep): List of data flow steps.
+//   - content ([]byte): File content as a byte slice.
+//   - startLine (int): Starting line number in the file.
+//   - language (string): Programming language of the file.
+//   - filePath (string): Path to the file.
+//   - variable (string): Variable name to highlight.
+//
+// Returns:
+//   - ([]models.DataFlow): List of created data flow objects.
+//
+// -----------------------------------------------------------------------------
 func CreateDataflow(dataflow []models.DataFlowStep, content []byte, startLine int, language, filePath, variable string) []models.DataFlow {
 	var Dataflows []models.DataFlow
 
 	lines := strings.Split(string(content), "\n")
 
 	for i, step := range dataflow {
-		// Créer l'objet Dataflow
+		// Create a DataFlow object for each step
 		dto := models.DataFlow{
 			NameHighlight: dataflow[i].Variable,
 			Line:          int(step.Line),
@@ -41,9 +42,9 @@ func CreateDataflow(dataflow []models.DataFlowStep, content []byte, startLine in
 			Order:         i + 1,
 		}
 
-		// Ajouter les lignes de code autour de la ligne concernée
-		start := max(int(step.Line)-8, 0)
-		end := min(int(step.Line)+7, len(lines)-1)
+		// Identify the lines of code around the relevant line
+		start := utilityService.Max(int(step.Line)-8, 0)
+		end := utilityService.Min(int(step.Line)+7, len(lines)-1)
 
 		for j := start; j <= end; j++ {
 			code := models.CodeLine{
@@ -59,8 +60,19 @@ func CreateDataflow(dataflow []models.DataFlowStep, content []byte, startLine in
 	return Dataflows
 }
 
-// RemoveDuplicateDataFlowStep removes duplicates in the data flow while preserving the order
-// and limits entries per line to a maximum of two (in case there are two variables on the same line).
+// -----------------------------------------------------------------------------
+// RemoveDuplicateDataFlowStep - Removes duplicates in the data flow while preserving the order.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - elements ([]models.DataFlowStep): List of data flow steps.
+//   - startLine (uint32): Starting line number in the file.
+//   - variable (string): Variable name to check for duplicates.
+//
+// Returns:
+//   - ([]models.DataFlowStep): List of data flow steps without duplicates.
+//
+// -----------------------------------------------------------------------------
 func RemoveDuplicateDataFlowStep(elements []models.DataFlowStep, startLine uint32, variable string) []models.DataFlowStep {
 	// Map to keep track of entries per variable per line
 	varLineMap := make(map[string]map[uint32]models.DataFlowStep)
@@ -150,7 +162,17 @@ func RemoveDuplicateDataFlowStep(elements []models.DataFlowStep, startLine uint3
 	return result
 }
 
-// CreateDataflowWithValue crée une étape de dataflow basée sur une valeur identifiée.
+// -----------------------------------------------------------------------------
+// CreateDataflowInitial - Creates an initial data flow step based on a given configuration.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - config (models.Config): Configuration object containing file path, start line, variable, and language.
+//
+// Returns:
+//   - ([]models.DataFlow): List containing the initial data flow object.
+//
+// -----------------------------------------------------------------------------
 func CreateDataflowInitial(config models.Config) []models.DataFlow {
 	// Lire le contenu du fichier et diviser en lignes
 	content, err := os.ReadFile(config.FilePath)
@@ -161,8 +183,8 @@ func CreateDataflowInitial(config models.Config) []models.DataFlow {
 	lines := strings.Split(string(content), "\n")
 
 	// Identifier les lignes de code autour de la ligne concernée
-	start := max(config.StartLine-8, 0)
-	end := min(config.StartLine+7, len(lines)-1)
+	start := utilityService.Max(config.StartLine-8, 0)
+	end := utilityService.Min(config.StartLine+7, len(lines)-1)
 
 	// Créer les lignes de code pour le champ "Code"
 	var codeLines []models.CodeLine
@@ -187,8 +209,17 @@ func CreateDataflowInitial(config models.Config) []models.DataFlow {
 	return []models.DataFlow{dataflow}
 }
 
-// getTypePriority assigns a priority to each type of data flow step.
-// Higher numbers indicate higher priority.
+// -----------------------------------------------------------------------------
+// getTypePriority - Assigns a priority to each type of data flow step.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - stepType (string): Type of the data flow step.
+//
+// Returns:
+//   - (int): Priority of the data flow step.
+//
+// -----------------------------------------------------------------------------
 func getTypePriority(stepType string) int {
 	switch stepType {
 	case "Assignment of value":

@@ -13,7 +13,18 @@ import (
 
 /**** Functions Declaration Functions ****/
 
-// FindParentFunction finds the parent function of a node for multiple languages. UPGRADE
+// -----------------------------------------------------------------------------
+// FindParentFunction - Finds the name of the parent function for a given node.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The node for which to find the parent function.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (string): The name of the parent function if found, otherwise an empty string.
+//
+// -----------------------------------------------------------------------------
 func FindParentFunction(node *sitter.Node, content []byte) string {
 	for node != nil {
 		switch node.Type() {
@@ -41,7 +52,19 @@ func FindParentFunction(node *sitter.Node, content []byte) string {
 	return ""
 }
 
-// IsFunctionDeclaration checks if the node represents a function declaration and finds calls to this function. UPGRADE
+// -----------------------------------------------------------------------------
+// IsFunctionDeclaration - Determines if a node represents a function declaration.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - root (*sitter.Node): The root node of the syntax tree.
+//   - node (*sitter.Node): The node to check if it is a function declaration.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (string): The name of the function if the node is a function declaration, otherwise an empty string.
+//
+// -----------------------------------------------------------------------------
 func IsFunctionDeclaration(root, node *sitter.Node, content []byte) string {
 	switch node.Type() {
 	case "function_declaration", "method_declaration", "function_definition", "function_item", "method":
@@ -66,7 +89,19 @@ func IsFunctionDeclaration(root, node *sitter.Node, content []byte) string {
 	return ""
 }
 
-// IsFunctionDeclared checks if the given function name is declared in the syntax tree. UPGRADE
+// -----------------------------------------------------------------------------
+// IsFunctionDeclared - Checks if a function with the given name is declared in the syntax tree.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - root (*sitter.Node): The root node of the syntax tree.
+//   - functionName (string): The name of the function to search for.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (bool): True if the function is declared, false otherwise.
+//
+// -----------------------------------------------------------------------------
 func IsFunctionDeclared(root *sitter.Node, functionName string, content []byte) bool {
 	var found bool
 
@@ -116,7 +151,19 @@ func IsFunctionDeclared(root *sitter.Node, functionName string, content []byte) 
 	return found
 }
 
-// FindFunctionDeclaration finds the declaration of a function by its name. UPGRADE
+// -----------------------------------------------------------------------------
+// FindFunctionDeclaration - Finds the declaration of a function by its name in the syntax tree.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - root (*sitter.Node): The root node of the syntax tree.
+//   - functionName (string): The name of the function to find.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (*sitter.Node): The node representing the function declaration if found, otherwise nil.
+//
+// -----------------------------------------------------------------------------
 func FindFunctionDeclaration(root *sitter.Node, functionName string, content []byte) *sitter.Node {
 	var result *sitter.Node
 	var traverse func(node *sitter.Node)
@@ -164,7 +211,19 @@ func FindFunctionDeclaration(root *sitter.Node, functionName string, content []b
 	return result
 }
 
-// FindFunctionByName finds a function by its name. UPGRADE
+// -----------------------------------------------------------------------------
+// FindFunctionDeclaration - Finds the declaration of a function by its name in the syntax tree.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - root (*sitter.Node): The root node of the syntax tree.
+//   - functionName (string): The name of the function to find.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (*sitter.Node): The node representing the function declaration if found, otherwise nil.
+//
+// -----------------------------------------------------------------------------
 func FindFunctionByName(root *sitter.Node, name string, content []byte) *sitter.Node {
 	logger.PrintDebug("Searching for function '%s'...", name)
 
@@ -215,7 +274,19 @@ func FindFunctionByName(root *sitter.Node, name string, content []byte) *sitter.
 	return result
 }
 
-// FindFunctionByLine finds the function containing the specified line. UPGRADE
+// -----------------------------------------------------------------------------
+// FindFunctionByLine - Finds the function node that contains the specified line.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - root (*sitter.Node): The root node of the syntax tree.
+//   - line (uint32): The line number to search for.
+//   - lang (string): The programming language of the source code.
+//
+// Returns:
+//   - (*sitter.Node): The node representing the function if found, otherwise nil.
+//
+// -----------------------------------------------------------------------------
 func FindFunctionByLine(root *sitter.Node, line uint32, lang string) *sitter.Node {
 	var result *sitter.Node
 
@@ -251,7 +322,19 @@ func FindFunctionByLine(root *sitter.Node, line uint32, lang string) *sitter.Nod
 	return result
 }
 
-// FindFunctionBounds finds the start and end lines of a function containing the specified line. UPGRADE
+// -----------------------------------------------------------------------------
+// FindFunctionBounds - Finds the start and end lines of a function containing the specified line.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - root (*sitter.Node): The root node of the syntax tree.
+//   - node (*sitter.Node): The node to check if it is a function declaration.
+//   - startLine (uint32): The line number to search for.
+//
+// Returns:
+//   - (functionStart, functionEnd uint32): The start and end lines of the function.
+//
+// -----------------------------------------------------------------------------
 func FindFunctionBounds(root *sitter.Node, node *sitter.Node, startLine uint32) (functionStart, functionEnd uint32) {
 	var currentNode *sitter.Node
 
@@ -278,7 +361,18 @@ func FindFunctionBounds(root *sitter.Node, node *sitter.Node, startLine uint32) 
 
 /**** Utils Functions ****/
 
-// SafeContent securely extracts the content of a node from the content of the file. UPGRADE
+// -----------------------------------------------------------------------------
+// SafeContent - Securely extracts the content of a node from the content of the file.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The node from which to extract content.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (string): The extracted content as a string.
+//
+// -----------------------------------------------------------------------------
 func SafeContent(node *sitter.Node, content []byte) string {
 	if node == nil {
 		return ""
@@ -295,13 +389,36 @@ func SafeContent(node *sitter.Node, content []byte) string {
 	return string(content[start:end])
 }
 
-// IsValidVariableToTrack verifies if the variable name corresponds to a function declaration. UPGRADE
+// -----------------------------------------------------------------------------
+// IsValidVariableToTrack - Verifies if the variable name corresponds to a function declaration.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - root (*sitter.Node): The root node of the syntax tree.
+//   - variable (string): The variable name to check.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (bool): True if the variable name does not correspond to a function declaration, false otherwise.
+//
+// -----------------------------------------------------------------------------
 func IsValidVariableToTrack(root *sitter.Node, variable string, content []byte) bool {
 	// Vérifier si le nom de la variable correspond à une déclaration de fonction
 	return !IsFunctionDeclared(root, variable, content)
 }
 
-// FindNodeAtLine finds the node at the specified line in the syntax tree. UPGRADE
+// -----------------------------------------------------------------------------
+// FindNodeAtLine - Finds the node at the specified line in the syntax tree.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The root node of the syntax tree.
+//   - targetLine (uint32): The line number to search for.
+//
+// Returns:
+//   - (*sitter.Node): The node at the specified line if found, otherwise nil.
+//
+// -----------------------------------------------------------------------------
 func FindNodeAtLine(node *sitter.Node, targetLine uint32) *sitter.Node {
 	if node.StartPoint().Row+1 == targetLine {
 		return node
@@ -317,7 +434,17 @@ func FindNodeAtLine(node *sitter.Node, targetLine uint32) *sitter.Node {
 	return nil
 }
 
-// GetControlType returns a descriptive string for control flow statements across multiple languages.
+// -----------------------------------------------------------------------------
+// GetControlType - Returns a descriptive string for control flow statements across multiple languages.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - nodeType (string): The type of the node.
+//
+// Returns:
+//   - (string): A descriptive string for the control flow statement.
+//
+// -----------------------------------------------------------------------------
 func GetControlType(nodeType string) string {
 	switch nodeType {
 	// Conditional statements
@@ -371,7 +498,17 @@ func GetControlType(nodeType string) string {
 	}
 }
 
-// IsLiteral checks if the node represents a literal value in the syntax tree. UPGRADE
+// -----------------------------------------------------------------------------
+// IsLiteral - Checks if the node represents a literal value in the syntax tree.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The node to check.
+//
+// Returns:
+//   - (bool): True if the node represents a literal value, false otherwise.
+//
+// -----------------------------------------------------------------------------
 func IsLiteral(node *sitter.Node) bool {
 	if node == nil {
 		return false
@@ -420,7 +557,17 @@ func IsLiteral(node *sitter.Node) bool {
 	return false
 }
 
-// findIdentifierInDeclarator recursively searches for an identifier in a declarator node.
+// -----------------------------------------------------------------------------
+// findIdentifierInDeclarator - Recursively searches for an identifier in a declarator node.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The declarator node to search.
+//
+// Returns:
+//   - (*sitter.Node): The identifier node if found, otherwise nil.
+//
+// -----------------------------------------------------------------------------
 func findIdentifierInDeclarator(node *sitter.Node) *sitter.Node {
 	if node == nil {
 		return nil
@@ -440,7 +587,17 @@ func findIdentifierInDeclarator(node *sitter.Node) *sitter.Node {
 
 /**** Call Functions ****/
 
-// FindCallExpression finds the call expression node in a given node for multiple languages. UPGRADE
+// -----------------------------------------------------------------------------
+// FindCallExpression - Finds the call expression node in a given node for multiple languages.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The node to search for a call expression.
+//
+// Returns:
+//   - (*sitter.Node): The call expression node if found, otherwise nil.
+//
+// -----------------------------------------------------------------------------
 func FindCallExpression(node *sitter.Node) *sitter.Node {
 	if node == nil {
 		return nil
@@ -462,7 +619,18 @@ func FindCallExpression(node *sitter.Node) *sitter.Node {
 	return nil
 }
 
-// extractFunctionNameFromCall extracts the function name from a function call node.
+// -----------------------------------------------------------------------------
+// ExtractFunctionNameFromCall - Extracts the function name from a function call node.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The function call node.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (string): The name of the function being called.
+//
+// -----------------------------------------------------------------------------
 func ExtractFunctionNameFromCall(node *sitter.Node, content []byte) string {
 	if node == nil {
 		return ""
@@ -488,8 +656,19 @@ func ExtractFunctionNameFromCall(node *sitter.Node, content []byte) string {
 	return ""
 }
 
-// IsFunctionCall checks if the node represents a function call involving the given variable. UPGRADE
-// If the function call is assigned to a variable, it returns the variable name.
+// -----------------------------------------------------------------------------
+// IsFunctionCall - Checks if the node represents a function call involving the given variable.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The node to check.
+//   - content ([]byte): The content of the source code.
+//   - variable (string): The variable to check for.
+//
+// Returns:
+//   - (bool, string): True if the node represents a function call involving the variable, and the variable name if assigned.
+//
+// -----------------------------------------------------------------------------
 func IsFunctionCall(node *sitter.Node, content []byte, variable string) (bool, string) {
 	if node == nil {
 		return false, ""
@@ -534,7 +713,18 @@ func IsFunctionCall(node *sitter.Node, content []byte, variable string) (bool, s
 	return false, ""
 }
 
-// getAssignedVariableName checks if the parent node represents an assignment to a variable and returns the variable name. UPGRADE
+// -----------------------------------------------------------------------------
+// getAssignedVariableName - Checks if the parent node represents an assignment to a variable and returns the variable name.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - parent (*sitter.Node): The parent node to check.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (string): The name of the assigned variable if found, otherwise an empty string.
+//
+// -----------------------------------------------------------------------------
 func getAssignedVariableName(parent *sitter.Node, content []byte) string {
 	if parent == nil {
 		return ""
@@ -583,7 +773,19 @@ func getAssignedVariableName(parent *sitter.Node, content []byte) string {
 	return ""
 }
 
-// FindFunctionCallSites searches all lines where a specific function is called.
+// -----------------------------------------------------------------------------
+// FindFunctionCallSites - Searches all lines where a specific function is called.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - root (*sitter.Node): The root node of the syntax tree.
+//   - functionName (string): The name of the function to search for.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - ([]models.FunctionCallSite): A slice of function call sites.
+//
+// -----------------------------------------------------------------------------
 func FindFunctionCallSites(root *sitter.Node, functionName string, content []byte) []models.FunctionCallSite {
 	var callSites []models.FunctionCallSite
 
@@ -622,7 +824,20 @@ func FindFunctionCallSites(root *sitter.Node, functionName string, content []byt
 	return callSites
 }
 
-// GetArgumentVariable finds the argument variable corresponding to a parameter variable in a function call.
+// -----------------------------------------------------------------------------
+// GetArgumentVariable - Finds the argument variable corresponding to a parameter variable in a function call.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - callNode (*sitter.Node): The function call node.
+//   - parameterVariable (string): The parameter variable to search for.
+//   - functionNode (*sitter.Node): The function node containing the parameter.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (string): The argument variable corresponding to the parameter variable.
+//
+// -----------------------------------------------------------------------------
 func GetArgumentVariable(callNode *sitter.Node, parameterVariable string, functionNode *sitter.Node, content []byte) string {
 	// Get the list of parameter names from the function's parameter list
 	parameters := getParametersNode(functionNode)
@@ -666,8 +881,18 @@ func GetArgumentVariable(callNode *sitter.Node, parameterVariable string, functi
 	return ""
 }
 
-// extractArgumentName extracts the variable name from an argument node.
-// It now handles expressions by extracting identifiers within them.
+// -----------------------------------------------------------------------------
+// extractArgumentName - Extracts the variable name from an argument node.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - argNode (*sitter.Node): The argument node.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (string): The name of the argument variable.
+//
+// -----------------------------------------------------------------------------
 func extractArgumentName(argNode *sitter.Node, content []byte) string {
 	if argNode == nil {
 		return ""
@@ -685,7 +910,17 @@ func extractArgumentName(argNode *sitter.Node, content []byte) string {
 	return ""
 }
 
-// getFunctionNode returns the node representing the function being called.
+// -----------------------------------------------------------------------------
+// getFunctionNode - Returns the node representing the function being called.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The node to search for the function.
+//
+// Returns:
+//   - (*sitter.Node): The function node if found, otherwise nil.
+//
+// -----------------------------------------------------------------------------
 func getFunctionNode(node *sitter.Node) *sitter.Node {
 	// Depending on the node type, the function node may be in different child fields
 	switch node.Type() {
@@ -712,7 +947,18 @@ func getFunctionNode(node *sitter.Node) *sitter.Node {
 	}
 }
 
-// extractFunctionName extracts the function name from the function node.
+// -----------------------------------------------------------------------------
+// extractFunctionName - Extracts the function name from the function node.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - funcNode (*sitter.Node): The function node.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (string): The name of the function.
+//
+// -----------------------------------------------------------------------------
 func extractFunctionName(funcNode *sitter.Node, content []byte) string {
 	if funcNode == nil {
 		return ""
@@ -752,7 +998,20 @@ func extractFunctionName(funcNode *sitter.Node, content []byte) string {
 
 // Functions to get parameter name
 
-// GetParameterName finds the name of the parameter corresponding to a variable in a function call. UPGRADE
+// -----------------------------------------------------------------------------
+// GetParameterName - Finds the name of the parameter corresponding to a variable in a function call.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - functionNode (*sitter.Node): The function node containing the parameter.
+//   - content ([]byte): The content of the source code.
+//   - originalVariable (string): The original variable name.
+//   - callSite (*sitter.Node): The function call node.
+//
+// Returns:
+//   - (string): The name of the parameter corresponding to the variable.
+//
+// -----------------------------------------------------------------------------
 func GetParameterName(functionNode *sitter.Node, content []byte, originalVariable string, callSite *sitter.Node) string {
 	// Find the position of the variable in the function call arguments
 	arguments := getArgumentsNode(callSite)
@@ -776,7 +1035,17 @@ func GetParameterName(functionNode *sitter.Node, content []byte, originalVariabl
 	return originalVariable // Return the original variable if no parameter name is found
 }
 
-// getParametersNode returns the node containing the parameters of a function definition.
+// -----------------------------------------------------------------------------
+// getParametersNode - Returns the node containing the parameters of a function definition.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - functionNode (*sitter.Node): The function node.
+//
+// Returns:
+//   - (*sitter.Node): The parameters node if found, otherwise nil.
+//
+// -----------------------------------------------------------------------------
 func getParametersNode(functionNode *sitter.Node) *sitter.Node {
 	switch functionNode.Type() {
 	case "function_declaration", "method_declaration", "function_definition", "function_item", "method":
@@ -797,7 +1066,17 @@ func getParametersNode(functionNode *sitter.Node) *sitter.Node {
 	return nil
 }
 
-// getArgumentsNode returns the node containing the arguments of a function call.
+// -----------------------------------------------------------------------------
+// getArgumentsNode - Returns the node containing the arguments of a function call.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - callSite (*sitter.Node): The function call node.
+//
+// Returns:
+//   - (*sitter.Node): The arguments node if found, otherwise nil.
+//
+// -----------------------------------------------------------------------------
 func getArgumentsNode(callSite *sitter.Node) *sitter.Node {
 	switch callSite.Type() {
 	case "call_expression", "method_invocation", "invocation_expression", "function_call_expression", "call", "macro_invocation":
@@ -815,7 +1094,17 @@ func getArgumentsNode(callSite *sitter.Node) *sitter.Node {
 	return nil
 }
 
-// findParametersInDeclarator recursively searches for 'parameters' in declarator nodes.
+// -----------------------------------------------------------------------------
+// findParametersInDeclarator - Recursively searches for 'parameters' in declarator nodes.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The declarator node to search.
+//
+// Returns:
+//   - (*sitter.Node): The parameters node if found, otherwise nil.
+//
+// -----------------------------------------------------------------------------
 func findParametersInDeclarator(node *sitter.Node) *sitter.Node {
 	if node == nil {
 		return nil
@@ -832,7 +1121,18 @@ func findParametersInDeclarator(node *sitter.Node) *sitter.Node {
 	return nil
 }
 
-// extractParameterName extracts the name of a parameter node.
+// -----------------------------------------------------------------------------
+// extractParameterName - Extracts the name of a parameter node.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - param (*sitter.Node): The parameter node.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (string): The name of the parameter.
+//
+// -----------------------------------------------------------------------------
 func extractParameterName(param *sitter.Node, content []byte) string {
 	if param == nil {
 		return ""
@@ -874,8 +1174,18 @@ func extractParameterName(param *sitter.Node, content []byte) string {
 	return ""
 }
 
-// extractParameterNames extracts the names of parameters from a parameter_declaration node.
-// It returns a slice of parameter names.
+// -----------------------------------------------------------------------------
+// extractParameterNames - Extracts the names of parameters from a parameter_declaration node.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - param (*sitter.Node): The parameter node.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - ([]string): A slice of parameter names.
+//
+// -----------------------------------------------------------------------------
 func extractParameterNames(param *sitter.Node, content []byte) []string {
 	var names []string
 	seen := make(map[string]bool) // Map pour éviter les doublons
@@ -950,8 +1260,19 @@ func extractParameterNames(param *sitter.Node, content []byte) []string {
 
 /**** Variable Functions ****/
 
-// IsAssignment checks if a variable is used in an assignment or declaration across multiple languages. UPGRADE
-// If the variable is found in the assignment, it returns true and the value assigned to it.
+// -----------------------------------------------------------------------------
+// IsAssignment - Checks if a variable is used in an assignment or declaration across multiple languages.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The node to check.
+//   - content ([]byte): The content of the source code.
+//   - variable (string): The variable to check for.
+//
+// Returns:
+//   - (bool, string): True if the variable is found in the assignment, and the value assigned to it.
+//
+// -----------------------------------------------------------------------------
 func IsAssignment(node *sitter.Node, content []byte, variable string) (bool, string) {
 	// Handle expression_statement nodes that may contain assignments
 	if node.Type() == "expression_statement" && node.NamedChildCount() > 0 {
@@ -1154,7 +1475,18 @@ func IsAssignment(node *sitter.Node, content []byte, variable string) (bool, str
 	return false, ""
 }
 
-// extractIdentifiers extracts identifier names from a node. UPGRADE
+// -----------------------------------------------------------------------------
+// extractIdentifiers - Extracts identifier names from a node.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The node to extract identifiers from.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - ([]string): A slice of identifier names.
+//
+// -----------------------------------------------------------------------------
 func extractIdentifiers(node *sitter.Node, content []byte) []string {
 	var identifiers []string
 
@@ -1211,7 +1543,19 @@ func extractIdentifiers(node *sitter.Node, content []byte) []string {
 	return identifiers
 }
 
-// IsVariableUsedInExpression checks if a variable is used in an expression within a node.
+// -----------------------------------------------------------------------------
+// IsVariableUsedInExpression - Checks if a variable is used in an expression within a node.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The node to check.
+//   - variable (string): The variable to check for.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (bool): True if the variable is used in the expression, false otherwise.
+//
+// -----------------------------------------------------------------------------
 func IsVariableUsedInExpression(node *sitter.Node, variable string, content []byte) bool {
 	if node == nil {
 		return false
@@ -1234,7 +1578,19 @@ func IsVariableUsedInExpression(node *sitter.Node, variable string, content []by
 	return false
 }
 
-// IsVariableInScope checks if the given variable is in scope within the provided function node.
+// -----------------------------------------------------------------------------
+// IsVariableInScope - Checks if the given variable is in scope within the provided function node.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - varName (string): The name of the variable to check.
+//   - functionNode (*sitter.Node): The function node to check within.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (bool): True if the variable is in scope, false otherwise.
+//
+// -----------------------------------------------------------------------------
 func IsVariableInScope(varName string, functionNode *sitter.Node, content []byte) bool {
 	if functionNode == nil {
 		return false
@@ -1296,7 +1652,20 @@ func IsVariableInScope(varName string, functionNode *sitter.Node, content []byte
 
 /**** Variable Global Functions ****/
 
-// AddGlobalVariableSteps adds global variable declaration steps for all unique variables in the data flow steps.
+// -----------------------------------------------------------------------------
+// AddGlobalVariableSteps - Adds global variable declaration steps for all unique variables in the data flow steps.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - dataFlow ([]models.DataFlowStep): The data flow steps to process.
+//   - root (*sitter.Node): The root node of the syntax tree.
+//   - content ([]byte): The content of the source code.
+//   - lineNumber (uint32): The line number to use for generic usage steps.
+//
+// Returns:
+//   - ([]models.DataFlowStep): The updated data flow steps with global variable declaration steps.
+//
+// -----------------------------------------------------------------------------
 func AddGlobalVariableSteps(dataFlow []models.DataFlowStep, root *sitter.Node, content []byte, lineNumber uint32) []models.DataFlowStep {
 	logger.PrintDebug("Extracting unique variables from data flow steps.")
 	processedVariables := make(map[string]string) // Tracks processed variables (lowercase -> original case)
@@ -1363,6 +1732,19 @@ func AddGlobalVariableSteps(dataFlow []models.DataFlowStep, root *sitter.Node, c
 	return append(dataFlow, finalSteps...)
 }
 
+// -----------------------------------------------------------------------------
+// FindGlobalVariableDeclaration - Finds the declaration of a global variable in the syntax tree.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - root (*sitter.Node): The root node of the syntax tree.
+//   - variable (string): The name of the variable to search for.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (*sitter.Node): The node representing the global variable declaration if found, otherwise nil.
+//
+// -----------------------------------------------------------------------------
 func FindGlobalVariableDeclaration(root *sitter.Node, variable string, content []byte) *sitter.Node {
 	if root == nil {
 		logger.PrintDebug("Root node is nil, skipping global variable search for '%s'.", variable)
@@ -1449,7 +1831,17 @@ func FindGlobalVariableDeclaration(root *sitter.Node, variable string, content [
 	return result
 }
 
-// isClassStaticVariableDeclarationNode checks if a node represents a class field declaration.
+// -----------------------------------------------------------------------------
+// isClassStaticVariableDeclarationNode - Checks if a node represents a class field declaration.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The node to check.
+//
+// Returns:
+//   - (bool): True if the node represents a class field declaration, false otherwise.
+//
+// -----------------------------------------------------------------------------
 func isClassStaticVariableDeclarationNode(node *sitter.Node) bool {
 	nodeType := node.Type()
 
@@ -1465,7 +1857,19 @@ func isClassStaticVariableDeclarationNode(node *sitter.Node) bool {
 	}
 }
 
-// IsClassFieldAssignment checks if a node represents an assignment to a class field.
+// -----------------------------------------------------------------------------
+// IsClassFieldAssignment - Checks if a node represents an assignment to a class field.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - node (*sitter.Node): The node to check.
+//   - content ([]byte): The content of the source code.
+//   - variable (string): The variable to check for.
+//
+// Returns:
+//   - (bool): True if the node represents an assignment to the class field, false otherwise.
+//
+// -----------------------------------------------------------------------------
 func IsClassFieldAssignment(node *sitter.Node, content []byte, variable string) bool {
 	nodeType := node.Type()
 	logger.PrintDebug("IsClassFieldAssignment: nodeType='%s'", nodeType)
@@ -1514,7 +1918,19 @@ func IsClassFieldAssignment(node *sitter.Node, content []byte, variable string) 
 	return false
 }
 
-// IsVariableGlobal checks if a variable is global within the provided root node.
+// -----------------------------------------------------------------------------
+// IsVariableGlobal - Checks if a variable is global within the provided root node.
+// -----------------------------------------------------------------------------
+//
+// Parameters:
+//   - root (*sitter.Node): The root node of the syntax tree.
+//   - variable (string): The name of the variable to check.
+//   - content ([]byte): The content of the source code.
+//
+// Returns:
+//   - (bool): True if the variable is global, false otherwise.
+//
+// -----------------------------------------------------------------------------
 func IsVariableGlobal(root *sitter.Node, variable string, content []byte) bool {
 	logger.PrintDebug("Checking if variable '%s' is global.", variable)
 	globalDecl := FindGlobalVariableDeclaration(root, variable, content)

@@ -2,7 +2,6 @@ package models
 
 import (
 	"dataflow/logger"
-	"encoding/json"
 	"fmt"
 
 	sitter "github.com/smacker/go-tree-sitter"
@@ -87,7 +86,19 @@ type IdentifyVariableResponse struct {
 	IsVariable      bool   `json:"isVariable"`
 }
 
-// PrintDataFlow affiche les étapes du flux de données.
+/**
+ * -----------------------------------------------------------------------------
+ * PrintDataFlow - Prints the data flow steps for a given variable.
+ * -----------------------------------------------------------------------------
+ *
+ * Parameters:
+ *   - dataFlow ([]DataFlowStep): List of data flow steps.
+ *
+ * Returns:
+ *   - (void): This function does not return a value.
+ *
+ * -----------------------------------------------------------------------------
+ */
 func PrintDataFlow(dataFlow []DataFlowStep) {
 	if len(dataFlow) == 0 {
 		logger.PrintWarning("No data flow steps found.")
@@ -108,19 +119,4 @@ func PrintDataFlow(dataFlow []DataFlowStep) {
 		fmt.Printf(" Variable: %s\n", step.Variable)
 		fmt.Println()
 	}
-}
-
-func PrintDataflow(Dataflow DataFlow) {
-	jsonData, err := json.MarshalIndent(Dataflow, "", "  ")
-	if err != nil {
-		fmt.Printf("Erreur lors de la conversion en JSON: %v\n", err)
-		return
-	}
-	fmt.Println(string(jsonData))
-}
-
-func PrintEmptyJSON() {
-	emptyResult := struct{}{}
-	jsonResult, _ := json.Marshal(emptyResult)
-	fmt.Println(string(jsonResult))
 }
