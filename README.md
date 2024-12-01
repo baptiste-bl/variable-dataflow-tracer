@@ -124,7 +124,7 @@ go run main.go -f <file_path> -l <line_number> -lang <language> -var <variable_n
 - `-f <file_path>`: Path to the code file to be analyzed.
 - `-l <line_number>`: Line number to start the dataflow analysis.
 - `-lang <language>`: Programming language of the file (e.g., `go`, `python`, `java`, `javascript`, etc.).
-- `-var <variable_name>`: Name of the variable to analyze in the data flow. If not provided, the tool will attempt to detect the variable automatically at the specified line.
+- `-var <variable_name>`: Name of the variable to analyze in the data flow.
 - `--verbose`: Enable verbose output for detailed information.
 - `--debug`: Enable debug output for even more detailed information.
 
@@ -137,14 +137,6 @@ go run main.go -f ./tests/py/example1.py -l 20 -lang python -var myVariable --ve
 ```
 
 This command analyzes the data flow of `myVariable` starting from line 20 in `example1.py`.
-
-**Example 2: Automatic Variable Detection**
-
-```bash
-go run main.go -f ./tests/go/example.go -l 15 -lang go --verbose
-```
-
-If `-var` is not specified, the tool will attempt to detect the variable at line 15.
 
 ### As a Library
 
