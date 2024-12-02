@@ -1,52 +1,64 @@
 # Variable Dataflow Tracer
 
-Variable Dataflow Tracer is an open-source tool developed by CyberDefence that performs variable-specific data flow analysis across multiple programming languages. It traces the usage and origin of a specified variable within codebases to create comprehensive dataflow graphs. This aids developers and security engineers in understanding how data moves through their applications, particularly focusing on individual variables. The project is licensed under the MIT License and welcomes contributions from the community.
+**Variable Dataflow Tracer** est un outil open-source développé par **CyberDefence**, conçu pour analyser les flux de données des variables spécifiques à travers plusieurs langages de programmation. Il permet de retracer l'origine et l'utilisation d'une variable donnée au sein d'une base de code pour générer des graphiques de flux de données détaillés. Cet outil aide les développeurs et les ingénieurs en sécurité à mieux comprendre comment les données circulent dans leurs applications, en se concentrant sur des variables individuelles. Le projet est distribué sous licence MIT et est ouvert aux contributions de la communauté.
 
 ---
 
-# Variable Dataflow Tracer
+## Badge
 
-![License](https://img.shields.io/badge/license-apache--2.0-blue)
-![Go Version](https://img.shields.io/badge/go-%3E%3D1.16-blue)
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![Licence](https://img.shields.io/badge/license-apache--2.0-blue)
+![Version Go](https://img.shields.io/badge/go-%3E%3D1.16-blue)
+![Statut Build](https://img.shields.io/badge/build-passing-brightgreen)
 
-## Table of Contents
+---
+
+## Table des matières
 
 1. [Introduction](#introduction)
-2. [Key Features](#key-features)
-3. [Supported Languages](#supported-languages)
-4. [Prerequisites](#prerequisites)
+2. [Fonctionnalités clés](#fonctionnalités-clés)
+3. [Langages supportés](#langages-supportés)
+4. [Prérequis](#prérequis)
 5. [Installation](#installation)
-6. [Usage](#usage)
-   - [As a Command-Line Tool](#as-a-command-line-tool)
-   - [As a Library](#as-a-library)
+6. [Utilisation](#utilisation)
+   - [En tant qu'outil en ligne de commande](#en-tant-quoutil-en-ligne-de-commande)
+   - [En tant que bibliothèque](#en-tant-que-bibliothèque)
    - [Arguments](#arguments)
-   - [Examples](#examples)
-7. [Testing](#testing)
-8. [Code Structure](#code-structure)
+   - [Exemples](#exemples)
+7. [Tests](#tests)
+8. [Structure du code](#structure-du-code)
 9. [Limitations](#limitations)
-10. [Recommendations for Use](#recommendations-for-use)
-11. [Contributing](#contributing)
-12. [License](#license)
+10. [Recommandations d'utilisation](#recommandations-dutilisation)
+11. [Contribuer](#contribuer)
+12. [Licence](#licence)
 13. [Contact](#contact)
+
+---
 
 ## Introduction
 
-**Variable Dataflow Tracer** is a versatile tool designed to analyze the data flow of specific variables in programs written in various programming languages. Leveraging [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) for syntax parsing, it provides insights into how a particular variable traverses through a codebase, tracing it back to its origin and tracking its usage throughout the application. This tool is particularly useful for developers and security engineers aiming to understand the lifecycle of variables, assisting in debugging, vulnerability assessments, and code reviews.
+**Variable Dataflow Tracer** est un outil polyvalent conçu pour analyser les flux de données des variables spécifiques dans les programmes écrits dans divers langages de programmation. Grâce à [Tree-sitter](https://tree-sitter.github.io/tree-sitter/) pour l'analyse syntaxique, il offre des informations détaillées sur le parcours d'une variable donnée à travers une base de code, retraçant son origine et suivant son utilisation dans l'application. Cet outil est particulièrement utile pour :
 
-## Key Features
+- Déboguer des applications complexes.
+- Effectuer des évaluations de vulnérabilité.
+- Réaliser des revues de code approfondies.
 
-- **Variable-Specific Analysis**: Focuses on tracing a specified variable within the code.
-- **Multilingual Support**: Analyze code across multiple programming languages.
-- **Recursive Data Flow Analysis**: Traces variables back to their sources by recursively traversing functions and function calls.
-- **Automatic Variable Detection**: Optionally detects variables at a specified line if not provided.
-- **Global Variable Tracking**: Tracks global variables and their values throughout the codebase.
-- **Hybrid Usage**: Utilize as both a command-line tool and a library in other Go projects.
-- **Detailed Logging**: Provides verbose and debug logging options to help diagnose issues and understand the analysis process.
+---
 
-## Supported Languages
+## Fonctionnalités clés
 
-The following languages are currently supported by **Variable Dataflow Tracer**:
+- **Analyse spécifique aux variables** : Retrace l'origine et l'utilisation d'une variable donnée.
+- **Support multilingue** : Compatible avec plusieurs langages de programmation.
+- **Analyse récursive des flux de données** : Parcourt les fonctions et appels de fonctions pour tracer les sources de données.
+- **Détection automatique des variables** : Identifie automatiquement les variables à une ligne donnée.
+- **Suivi des variables globales** : Suit les variables globales et leurs valeurs dans tout le code.
+- **Double usage** : Peut être utilisé comme outil en ligne de commande ou intégré comme bibliothèque dans des projets Go.
+- **Journaux détaillés** : Fournit des options de journalisation pour diagnostiquer les problèmes ou comprendre le processus d'analyse.
+
+---
+
+## Langages supportés
+
+Les langages actuellement pris en charge sont :
 
 - Go
 - Python
@@ -59,222 +71,144 @@ The following languages are currently supported by **Variable Dataflow Tracer**:
 - Ruby
 - Rust
 
-*Note: The project is under active development. Additional languages and features will be added in future releases.*
+> **Remarque** : Le projet est en cours de développement. De nouveaux langages et fonctionnalités seront ajoutés prochainement.
 
-## Prerequisites
+---
 
-- [Go](https://golang.org/doc/install) installed on your machine (version **1.16** or later recommended).
+## Prérequis
+
+- [Go](https://golang.org/doc/install) version **1.16** ou ultérieure.
+- Docker et Visual Studio Code (avec l’extension **Dev Containers** activée).
+
+---
 
 ## Installation
 
-### Prerequisites
+### Étapes d'installation
 
-Ensure you have **Docker** and **Visual Studio Code** installed, along with the **Dev Containers** extension enabled. This setup provides a consistent development environment using a container.
-
-### Installation Steps
-
-1. **Clone the Repository**:
-
-   Clone the project locally to start development.
+1. **Cloner le dépôt** :
 
    ```bash
-   git clone https://github.com/your-username/variable-dataflow-tracer.git
+   git clone https://github.com/votre-nom-utilisateur/variable-dataflow-tracer.git
    cd variable-dataflow-tracer
    ```
 
-2. **Open the Project in a Dev Container**:
+2. **Ouvrir le projet dans un conteneur de développement** :
 
-   Open the project folder in Visual Studio Code, and let the Dev Containers extension automatically set up the environment.
+   - Ouvrez Visual Studio Code.
+   - Dans la palette de commandes (`Ctrl + Shift + P`), sélectionnez **Dev Containers: Rebuild and Reopen in Container**.
+   - Attendez que l'environnement de conteneur soit configuré.
 
-   1. Open the command palette in VS Code (`Ctrl + Shift + P`).
-   2. Search for and select: **Dev Containers: Rebuild and Reopen in Container**.
-   3. Wait for the container to be built and ready for use.
-
-   Once the Dev Container is active, you will have a fully configured environment with all necessary dependencies, including Go, GCC, and Clang.
-
-3. **Install Project Dependencies**:
-
-   Inside the Dev Container, run the following command to install the Go dependencies:
+3. **Installer les dépendances** :
 
    ```bash
    go mod tidy
    ```
 
-   This ensures that all required dependencies for the project are correctly installed.
+   Cela garantit que toutes les dépendances nécessaires sont installées.
 
 ---
 
-### Summary
+## Utilisation
 
-- **Why use a Dev Container?**: It simplifies dependency management (Go, GCC, Clang) and ensures a consistent development environment for all contributors.
-- **Included Dependencies**: Go `1.22.7`, GCC, Clang, musl-dev.
+### En tant qu'outil en ligne de commande
 
-## Usage
-
-### As a Command-Line Tool
-
-You can run **Variable Dataflow Tracer** directly from the command line.
+Exemple de commande pour analyser une variable spécifique :
 
 ```bash
-go run main.go -f <file_path> -l <line_number> -lang <language> -var <variable_name> [--verbose] [--debug]
+go run main.go -f <chemin_du_fichier> -l <numéro_de_ligne> -lang <langage> -var <nom_de_la_variable> [--verbose] [--debug]
 ```
 
-#### Arguments
+**Arguments principaux** :
 
-- `-f <file_path>`: Path to the code file to be analyzed.
-- `-l <line_number>`: Line number to start the dataflow analysis.
-- `-lang <language>`: Programming language of the file (e.g., `go`, `python`, `java`, `javascript`, etc.).
-- `-var <variable_name>`: Name of the variable to analyze in the data flow.
-- `--verbose`: Enable verbose output for detailed information.
-- `--debug`: Enable debug output for even more detailed information.
+- `-f` : Chemin vers le fichier à analyser.
+- `-l` : Ligne de départ pour l'analyse.
+- `-lang` : Langage de programmation (ex. `python`, `go`).
+- `-var` : Nom de la variable à analyser.
+- `--verbose` : Active les journaux détaillés.
+- `--debug` : Active les journaux de débogage.
 
-#### Examples
+### En tant que bibliothèque
 
-**Example 1: Specifying the Variable**
+Exemple d'utilisation dans un projet Go :
 
-```bash
-go run main.go -f ./tests/py/example1.py -l 20 -lang python -var myVariable --verbose --debug
+```go
+package main
+
+import (
+    "fmt"
+    "github.com/votre-nom-utilisateur/variable-dataflow-tracer/core"
+    "github.com/votre-nom-utilisateur/variable-dataflow-tracer/models"
+)
+
+func main() {
+    config := models.Config{
+        FilePath:  "chemin/vers/le/fichier",
+        StartLine: 20,
+        Language:  "go",
+        Verbose:   true,
+        Debug:     false,
+        Variable:  "maVariable",
+    }
+
+    result, err := core.RunDataflowAnalysis(config)
+    if err != nil {
+        fmt.Println("Erreur :", err)
+        return
+    }
+    fmt.Println("Résultat :", result)
+}
 ```
 
-This command analyzes the data flow of `myVariable` starting from line 20 in `example1.py`.
+---
 
-### As a Library
+## Tests
 
-To use **Variable Dataflow Tracer** in your Go project:
+Pour exécuter les tests :
 
-1. **Import the Package**:
-
-   ```go
-   import (
-       "github.com/your-username/variable-dataflow-tracer/core"
-       "github.com/your-username/variable-dataflow-tracer/models"
-   )
-   ```
-
-2. **Use the `RunDataflowAnalysis` Function**:
-
-   ```go
-   package main
-
-   import (
-       "fmt"
-       "github.com/your-username/variable-dataflow-tracer/core"
-       "github.com/your-username/variable-dataflow-tracer/models"
-   )
-
-   func main() {
-       config := models.Config{
-           FilePath:  "path/to/file",
-           StartLine: 20,
-           Language:  "go",
-           Verbose:   true,
-           Debug:     false,
-           Variable:  "myVariable",
-       }
-
-       result, err := core.RunDataflowAnalysis(config)
-       if err != nil {
-           // Handle error
-           fmt.Println("Error:", err)
-           return
-       }
-       // Process result
-       fmt.Println("Dataflow Result:", result)
-   }
-   ```
-
-   In this example, the `Variable` field specifies the variable to trace.
-
-## Testing
-
-We have provided an initial test suite to help you get started. To run the tests:
-
-1. Navigate to the `tests` directory:
+1. Accédez au répertoire des tests :
 
    ```bash
    cd tests
    ```
 
-2. Run the test script:
+2. Lancez le script de test :
 
    ```bash
    go run test_all_languages.go
    ```
 
-   *Note: You may need to configure the test files, line numbers, and variable names within `test_all_languages.go` according to your needs. An initial set of test cases is provided for example purposes.*
-
-## Code Structure
-
-The project is organized into several key components:
-
-- **`core`**: Contains the main function `RunDataflowAnalysis`, which is the primary entry point for data flow analysis. This function configures the analysis based on provided parameters and invokes the crawler.
-- **`crawler`**: Implements the core logic to traverse the code and build the dataflow graph. It recursively explores the code to trace the specified variable.
-- **`logger`**: Provides logging functionalities at different levels (info, warning, error, debug), enabling users to monitor the analysis process.
-- **`models`**: Defines the data structures used throughout the analysis process, such as `Config`, `Dataflow`, and other entities.
-- **`services`**:
-  - **`dataFlowService`**: Handles the creation and management of dataflow structures, assembling the traced paths.
-  - **`languageService`**: Manages language-specific processing and supports multiple programming languages by abstracting language details.
-  - **`nodeService`**: Deals with node recognition and processing based on the language syntax. This is the most extensive part of the code and may require significant improvements for enhanced performance and language support.
-  - **`utilityService`**: Contains helper functions used across the application, such as file handling and string manipulation.
-- **`tests`**: Contains test scripts and example code files for different languages to validate the tool's functionality.
-- **`main.go`**: The entry point of the command-line interface (CLI), which parses arguments and initiates the analysis.
+---
 
 ## Limitations
 
-- **Incomplete Testing**: The project is in active development and is not fully tested. Users may encounter bugs or incomplete features.
-- **Language Support**: While multiple languages are supported, the tool may not fully handle all language-specific constructs or complex code patterns.
-- **Node Recognition**: The `nodeService` may require further refinement to improve accuracy and performance.
-- **Complex Patterns**: The tool may struggle with highly complex codebases or unconventional coding patterns.
+- **Langages partiellement supportés** : Certains langages ne sont pas encore pleinement compatibles.
+- **Complexité des codes** : Les bases de code très complexes peuvent poser des défis.
+- **Tests limités** : Le projet nécessite davantage de tests pour garantir la fiabilité.
 
-## Recommendations for Use
+---
 
-- **Contributions Welcome**: As the project is under development, we encourage contributions to improve language support, performance, and features.
-- **Error Handling**: When integrating **Variable Dataflow Tracer** as a library, implement additional error handling and result processing to suit your specific use case.
-- **Testing**: Before using the tool on critical codebases, run it against the provided tests and your own examples to understand its behavior.
-- **Performance Considerations**: For large codebases, consider running the tool with optimized settings and be aware that analysis may take longer.
+## Contribuer
 
-## Contributing
-
-We appreciate contributions from the community to enhance **Variable Dataflow Tracer**. To contribute:
-
-1. **Fork the Repository**:
-
-   Click on the "Fork" button at the top right of the repository page.
-
-2. **Create a Feature Branch**:
-
+1. **Forkez le dépôt**.
+2. **Créez une branche** :
    ```bash
-   git checkout -b feature/your-feature-name
+   git checkout -b feature/nom-de-votre-feature
    ```
+3. **Soumettez une pull request**.
 
-3. **Commit Your Changes**:
+---
 
-   ```bash
-   git commit -am "Add new feature"
-   ```
+## Licence
 
-4. **Push to Your Fork**:
+Ce projet est sous licence **MIT**.
 
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-5. **Create a Pull Request**:
-
-   Submit a pull request to the `main` branch of the original repository.
-
-### Code of Conduct
-
-Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project, you agree to abide by its terms.
-
-## License
-
-This project is licensed under the terms of the Apache 2 license. See the [LICENSE](LICENSE) file for details.
+---
 
 ## Contact
 
-For any questions or suggestions, feel free to reach out to us:
+Pour toute question :
 
-- **Company**: Cybedefend
-- **Email**: [contact@cybedefend.com](mailto:contact@cybedefend.com)
-- **Website**: [www.cybedefend.com](https://www.cybedefend.com)
+- **Entreprise** : CyberDefence
+- **Email** : [contact@cyberdefence.com](mailto:contact@cyberdefence.com)  
+- **Site web** : [www.cyberdefence.com](https://www.cyberdefence.com)
