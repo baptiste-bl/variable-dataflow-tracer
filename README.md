@@ -6,7 +6,7 @@ Variable Dataflow Tracer is an open-source tool developed by Cybedefend that per
 
 # Variable Dataflow Tracer
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![License](https://img.shields.io/badge/license-apache--2.0-blue)
 ![Go Version](https://img.shields.io/badge/go-%3E%3D1.16-blue)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 
